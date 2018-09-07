@@ -67,6 +67,7 @@ describe('Extension Tests', () => {
             'blockchainExplorer.deleteConnectionEntry',
             'blockchainExplorer.addConnectionIdentityEntry',
             'blockchain.createSmartContractProjectEntry',
+            'blockchainAPackageExplorer.packageSmartContractProject',
             'blockchainAPackageExplorer.refreshEntry',
             'blockchainExplorer.startFabricRuntime',
             'blockchainExplorer.stopFabricRuntime',

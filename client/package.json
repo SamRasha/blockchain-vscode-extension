@@ -159,7 +159,7 @@
             },
             {
                 "command": "blockchainAPackageExplorer.packageSmartContractProject",
-                "title": "Add Smart Contract Package",
+                "title": "Package Smart Contract Package",
                 "icon": {
                     "light": "resources/light/add_light.svg",
                     "dark": "resources/dark/add.svg"
@@ -291,6 +291,7 @@
         "mocha": "5.2.0",
         "nyc": "^12.0.2",
         "remap-istanbul": "0.11.1",
+        "rewire": "4.0.1",
         "rimraf": "^2.6.2",
         "sinon": "6.1.4",
         "sinon-chai": "3.2.0",
@@ -313,6 +314,7 @@
         "fs-extra": "^7.0.0",
         "home-dir": "1.0.0",
         "strip-ansi": "^4.0.0",
+        "urijs": "^1.19.1",
         "vscode-languageclient": "4.4.1"
     },
     "nativeDependencies": {

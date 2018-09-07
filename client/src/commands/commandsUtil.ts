@@ -13,6 +13,7 @@
 */
 'use strict';
 import * as vscode from 'vscode';
+import * as homeDir from 'home-dir';
 import { ParsedCertificate } from '../fabric/ParsedCertificate';
 import { FabricRuntimeRegistry } from '../fabric/FabricRuntimeRegistry';
 import { FabricRuntimeRegistryEntry } from '../fabric/FabricRuntimeRegistryEntry';
@@ -39,9 +40,36 @@ export class CommandsUtil {
 
     static showInputBox(question: string): Thenable<string | undefined> {
         const inputBoxOptions = {
-            prompt: question
+            prompt: question,
+            canPickMany: false,
+            ignoreFocusOut: true
         };
         return vscode.window.showInputBox(inputBoxOptions);
+    }
+    static async showGolangQuickPickBox(prompt: string): Promise<string | undefined> {
+        const workspaceFolderOptions = await CommandsUtil.getWorkspaceFolders();
+        const quickPickOptions = {
+            ignoreFocusOut: true,
+            canPickMany: false,
+            matchOnDetail: true,
+            placeHolder: prompt
+        };
+
+        return vscode.window.showQuickPick(workspaceFolderOptions, quickPickOptions);
+    }
+    static async getWorkspaceFolders(): Promise<string[]> {
+        const workspace = vscode.workspace.workspaceFolders;
+        const workspaceFolderOptions: Array<string> = [];
+        if (!workspace) {
+            const message: string = 'Please open the workspace that you want to be packaged.';
+            vscode.window.showInformationMessage(message);
+            throw new Error(message);
+        }
+        workspace.forEach((space) => {
+            workspaceFolderOptions.push(space.name);
+        });
+
+        return workspaceFolderOptions;
     }
 
     static showIdentityConnectionQuickPickBox(prompt: string, connection: any): Thenable<string | undefined> {

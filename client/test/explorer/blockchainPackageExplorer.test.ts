@@ -62,9 +62,9 @@ describe('BlockchainPackageExplorer', () => {
 
         testPackages.length.should.equal(5);
         testPackages[0].label.should.equal('smartContractPackageGo');
-        testPackages[1].label.should.equal('smartContractPackageBlue'); // purposefully doesn't contain package.json
-        testPackages[2].label.should.equal('smartContractPackageGreen - v00.01.555');
-        testPackages[3].label.should.equal('smartContractPackagePurple - v91.836.0');
+        testPackages[1].label.should.equal('smartContractPackageBlue');
+        testPackages[2].label.should.equal('smartContractPackageGreen');
+        testPackages[3].label.should.equal('smartContractPackagePurple');
         testPackages[4].label.should.equal('smartContractPackageYellow');
         errorSpy.should.not.have.been.called;
 
@@ -127,23 +127,29 @@ describe('BlockchainPackageExplorer', () => {
         errorSpy.should.not.have.been.called;
     });
 
-    it('should show a message if it fails to read a go smart contract package directory', async () => {
+    it('should show a message if it fails to read the go smart contract package directory', async () => {
         const packagesDir: string = path.join(rootPath, '../../test/data/smartContractDir');
         const goPackagesDir: string = path.join(rootPath, '../../test/data/smartContractDir/go/src');
+        const javaScriptPackagesDir: string = path.join(rootPath, '../../test/data/smartContractDir/javascript');
+        const typeScriptPackagesDir: string = path.join(rootPath, '../../test/data/smartContractDir/typescript');
+        const javaScriptPackagesDirContents: string[] = await fs_extra.readdir(javaScriptPackagesDir);
+        const typeScriptPackagesDirContents: string[] = await fs_extra.readdir(typeScriptPackagesDir);
         const packagesDirContents: string[] = await fs_extra.readdir(packagesDir);
         await vscode.workspace.getConfiguration().update('fabric.package.directory', packagesDir, true);
 
         const readDirStub = mySandBox.stub(fs_extra, 'readdir');
         readDirStub.onCall(0).resolves(packagesDirContents);
         readDirStub.onCall(1).rejects();
+        readDirStub.onCall(2).resolves(javaScriptPackagesDirContents);
+        readDirStub.onCall(3).resolves(typeScriptPackagesDirContents);
         blockchainPackageExplorerProvider = myExtension.getBlockchainPackageExplorerProvider();
         const testPackages: Array<PackageTreeItem> = await blockchainPackageExplorerProvider.getChildren();
-        infoSpy.should.have.been.calledWith('Issue listing go smart contract packages in:' + goPackagesDir);
+        infoSpy.should.have.been.calledWith('Issue listing smart contract packages in:' + goPackagesDir);
 
         testPackages.length.should.equal(4);
         testPackages[0].label.should.equal('smartContractPackageBlue');
-        testPackages[1].label.should.equal('smartContractPackageGreen - v00.01.555');
-        testPackages[2].label.should.equal('smartContractPackagePurple - v91.836.0');
+        testPackages[1].label.should.equal('smartContractPackageGreen');
+        testPackages[2].label.should.equal('smartContractPackagePurple');
         testPackages[3].label.should.equal('smartContractPackageYellow');
         errorSpy.should.not.have.been.called;
     });
