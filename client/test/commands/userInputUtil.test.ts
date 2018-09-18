@@ -130,10 +130,25 @@ describe('Commands Utility Function Tests', () => {
 
             const result = await UserInputUtil.showInputBox('a question');
             result.should.equal('my answer');
-            inputStub.should.have.been.calledWith({prompt: 'a question'});
+            inputStub.should.have.been.calledWith({
+                    prompt: 'a question',
+                    ignoreFocusOut: true
+                });
         });
     });
+    // describe('getWorkspaceFolders', () => {
+    //     it('should get the top level folders within the workspace', async () => {
 
+    //     });
+    // });
+    // describe('getBasePackageDir', () => {
+    //     it.only('should replace ~ with the users home directory', async () => {
+    //         vscode.workspace.getConfiguration().update('fabric.package.directory', path.dirname(__dirname) + '/blockchain-vscode-extension/client/test/data/smartContractDir');
+    //         let packageDir: string = vscode.workspace.getConfiguration().get('fabric.package.directory');
+    //         console.log(packageDir);
+    //         packageDir = await UserInputUtil.getBasePackageDir(packageDir);
+    //     });
+    // });
     describe('showRuntimeQuickPickBox', () => {
         it('should show runtimes in the quickpick box', async () => {
             quickPickStub.resolves({label: 'local_fabric2', data: runtimeManager.get('local_fabric2')});

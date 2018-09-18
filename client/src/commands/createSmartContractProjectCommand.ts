@@ -119,7 +119,6 @@ export async function createSmartContractProject(): Promise<void> {
     }
 
 } // end of createSmartContractProject function
-
 async function checkGeneratorDependenciesWithProgress(): Promise<GeneratorDependencies> {
     return vscode.window.withProgress({
         location: vscode.ProgressLocation.Notification,
